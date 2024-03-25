@@ -1,0 +1,15 @@
+    def __getitem__(self, idx):
+        image_name = self.image_list[idx]
+        print("Processing sample:", image_name)  # 打印样本名称
+
+        h5f = h5py.File(self._base_dir + "/{}.h5".format(image_name), 'r')
+        image = h5f['image'][:]
+        label = h5f['label'][:]
+        sample = {'image': image, 'label': label.astype(np.uint8)}
+        if self.transform:
+           try:
+             sample = self.transform(sample)
+           except Exception as e:
+             print("Error occurred with sample:", image_name)  # 打印出错的样本名称
+             raise e  # 重新抛出异常
+        return sample

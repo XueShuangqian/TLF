@@ -447,7 +447,7 @@ def train(args, snapshot_path):
             # total loss
             t = tau.sigmoid_rampup(epoch_num, 100)
             if args.use_consistency:
-                loss = supervised_loss + consistency_weight * (consistency_loss + args.weak_weight * weak_supervised_loss + 5 * contrastive_loss)
+                loss = supervised_loss + 0.1 * t * contrastive_loss + consistency_weight * (consistency_loss + args.weak_weight * weak_supervised_loss)
             else:
                 loss = supervised_loss + consistency_weight * (args.weak_weight * weak_supervised_loss)
             
